@@ -1,0 +1,124 @@
+{
+  "planHash": "f3d0700d4b3a5cf412985206a6c7f93a42d8e94321ba00a9e83b18021f4c5501",
+  "phase": "standalone",
+  "recordedAtUtc": "2026-10-26T21:58:14.1629899Z",
+  "retryCount": 3,
+  "resetBaseline": false,
+  "complete": true,
+  "result": {
+    "setupSucceeded": true,
+    "setupDurationMs": 0,
+    "setupFailureOutput": null,
+    "assertions": [
+      {
+        "name": "production-build",
+        "kind": "process",
+        "verificationMethod": "exit-code",
+        "passed": true,
+        "timedOut": false,
+        "skipped": false,
+        "skippedReason": null,
+        "exitCode": 0,
+        "outputSample": "\r\n\u003E workshop-login-frontend@0.1.0 build\r\n\u003E ng build\r\n\r\n\u001B[33m\u003E\u001B[39m Building...\r\n\u001B[32m\u221A\u001B[39m Building...\r\n\u001B[1mInitial chunk files\u001B[22m  \u001B[2m | \u001B[22m\u001B[1mNames\u001B[22m              \u001B[2m | \u001B[22m \u001B[1mRaw size\u001B[22m\u001B[2m | \u001B[22m\u001B[1mEstimated transfer size\u001B[22m\r\n\u001B[32mchunk-2YTLIYGE.js\u001B[39m    \u001B[2m | \u001B[22m\u001B[2m-\u001B[22m                  \u001B[2m | \u001B[22m\u001B[36m213.75 kB\u001B[39m\u001B[2m | \u001B[22m               \u001B[36m58.23 kB\u001B[39m\r\n\u001B[32mpolyfills-5CFQRCPP.js\u001B[39m\u001B[2m | \u001B[22m\u001B[2mpolyfills\u001B[22m          \u001B[2m | \u001B[22m \u001B[36m34.59 kB\u001B[39m\u001B[2m | \u001B[22m               \u001B[36m11.33 kB\u001B[39m\r\n\u001B[32mstyles-6ZHFPUQP.css\u001B[39m  \u001B[2m | \u001B[22m\u001B[2mstyles\u001B[22m             \u001B[2m | \u001B[22m  \u001B[36m1.47 kB\u001B[39m\u001B[2m | \u001B[22m              \u001B[36m636 bytes\u001B[39m\r\n\u001B[32mmain-4REGWFZX.js\u001B[39m     \u001B[2m | \u001B[22m\u001B[2mmain\u001B[22m               \u001B[2m | \u001B[22m\u001B[36m635 bytes\u001B[39m\u001B[2m | \u001B[22m              \u001B[36m635 bytes\u001B[39m\r\n\r\n\u001B[1m \u001B[22m                    \u001B[2m | \u001B[22m\u001B[1mInitial total\u001B[22m      \u001B[2m | \u001B[22m\u001B[1m250.44 kB\u001B[22m\u001B[2m | \u001B[22m               \u001B[1m70.83 kB\u001B[22m\r\n\r\n\u001B[1mLazy chunk files\u001B[22m     \u001B[2m | \u001B[22m\u001B[1mNames\u001B[22m              \u001B[2m | \u001B[22m \u001B[1mRaw size\u001B[22m\u001B[2m | \u001B[22m\u001B[1mEstimated transfer size\u001B[22m\r\n\u001B[32mchunk-H5EKMWHH.js\u001B[39m    \u001B[2m | \u001B[22m\u001B[2mlogin-component\u001B[22m    \u001B[2m | \u001B[22m \u001B[36m29.32 kB\u001B[39m\u001B[2m | \u001B[22m                \u001B[36m7.70 kB\u001B[39m\r\n\u001B[32mchunk-ETVE6VD6.js\u001B[39m    \u001B[2m | \u001B[22m\u001B[2mdashboard-component\u001B[22m\u001B[2m | \u001B[22m  \u001B[36m7.26 kB\u001B[39m\u001B[2m | \u001B[22m                \u001B[36m2.57 kB\u001B[39m\r\n\u001B[32mchunk-IKA5J7GQ.js\u001B[39m    \u001B[2m | \u001B[22m\u001B[2m-\u001B[22m                  \u001B[2m | \u001B[22m  \u001B[36m1.14 kB\u001B[39m\u001B[2m | \u001B[22m              \u001B[36m511 bytes\u001B[39m\r\n\r\nApplication bundle generation complete. [2.806 seconds] - 2026-10-26T21:58:03.775Z\r\n\r\nOutput location: C:\\Users\\Usuario\\Documents\\T19764-pedro-silva-shocush\\ai-labs\\web\\dist\\workshop-login-frontend\r\n\r\n",
+        "durationMs": 4933
+      },
+      {
+        "name": "tests-pass",
+        "kind": "process",
+        "verificationMethod": "test-results",
+        "passed": true,
+        "timedOut": false,
+        "skipped": false,
+        "skippedReason": null,
+        "exitCode": 0,
+        "outputSample": "\r\n\u003E workshop-login-frontend@0.1.0 test\r\n\u003E vitest run\r\n\r\n\r\n\u001B[1m\u001B[46m RUN \u001B[49m\u001B[22m \u001B[36mv3.2.4 \u001B[39m\u001B[90mC:/Users/Usuario/Documents/T19764-pedro-silva-shocush/ai-labs/web\u001B[39m\r\n\r\n \u001B[32m\u2713\u001B[39m src/app/utils/preferences.spec.ts \u001B[2m(\u001B[22m\u001B[2m4 tests\u001B[22m\u001B[2m)\u001B[22m\u001B[32m 13\u001B[2mms\u001B[22m\u001B[39m\r\n \u001B[32m\u2713\u001B[39m src/app/utils/legacy-format.spec.ts \u001B[2m(\u001B[22m\u001B[2m3 tests\u001B[22m\u001B[2m)\u001B[22m\u001B[32m 4\u001B[2mms\u001B[22m\u001B[39m\r\n \u001B[32m\u2713\u001B[39m src/app/models/api.guards.spec.ts \u001B[2m(\u001B[22m\u001B[2m4 tests\u001B[22m\u001B[2m)\u001B[22m\u001B[32m 4\u001B[2mms\u001B[22m\u001B[39m\r\n \u001B[32m\u2713\u001B[39m src/app/utils/visible-tasks.spec.ts \u001B[2m(\u001B[22m\u001B[2m2 tests\u001B[22m\u001B[2m)\u001B[22m\u001B[32m 4\u001B[2mms\u001B[22m\u001B[39m\r\n \u001B[32m\u2713\u001B[39m src/app/services/session.service.spec.ts \u001B[2m(\u001B[22m\u001B[2m3 tests\u001B[22m\u001B[2m)\u001B[22m\u001B[32m 11\u001B[2mms\u001B[22m\u001B[39m\r\n \u001B[32m\u2713\u001B[39m src/app/services/auth.service.spec.ts \u001B[2m(\u001B[22m\u001B[2m7 tests\u001B[22m\u001B[2m)\u001B[22m\u001B[32m 26\u001B[2mms\u001B[22m\u001B[39m\r\n \u001B[32m\u2713\u001B[39m src/app/services/tasks.service.spec.ts \u001B[2m(\u001B[22m\u001B[2m7 tests\u001B[22m\u001B[2m)\u001B[22m\u001B[32m 26\u001B[2mms\u001B[22m\u001B[39m\r\n \u001B[32m\u2713\u001B[39m src/app/dashboard/dashboard.component.spec.ts \u001B[2m(\u001B[22m\u001B[2m5 tests\u001B[22m\u001B[2m)\u001B[22m\u001B[32m 11\u001B[2mms\u001B[22m\u001B[39m\r\n \u001B[32m\u2713\u001B[39m src/app/login/login.component.spec.ts \u001B[2m(\u001B[22m\u001B[2m6 tests\u001B[22m\u001B[2m)\u001B[22m\u001B[32m 6\u001B[2mms\u001B[22m\u001B[39m\r\n \u001B[32m\u2713\u001B[39m src/app/auth-flow.spec.ts \u001B[2m(\u001B[22m\u001B[2m2 tests\u001B[22m\u001B[2m)\u001B[22m\u001B[32m 8\u001B[2mms\u001B[22m\u001B[39m\r\n\r\n\u001B[2m Test Files \u001B[22m \u001B[1m\u001B[32m10 passed\u001B[39m\u001B[22m\u001B[90m (10)\u001B[39m\r\n\u001B[2m      Tests \u001B[22m \u001B[1m\u001B[32m43 passed\u001B[39m\u001B[22m\u001B[90m (43)\u001B[39m\r\n\u001B[2m   Start at \u001B[22m 16:58:04\r\n\u001B[2m   Duration \u001B[22m 1.69s\u001B[2m (transform 877ms, setup 0ms, collect 5.05s, tests 113ms, environment 3ms, prepare 2.13s)\u001B[22m\r\n\r\n",
+        "durationMs": 2823,
+        "testResults": {
+          "testFramework": "vitest",
+          "runnerDetectedFrom": "package_json",
+          "testsTotal": 43,
+          "testsPassed": 43,
+          "testsFailed": 0,
+          "testsSkipped": 0,
+          "parseFailed": false
+        }
+      },
+      {
+        "name": "coverage-report",
+        "kind": "process",
+        "verificationMethod": "exit-code",
+        "passed": true,
+        "timedOut": false,
+        "skipped": false,
+        "skippedReason": null,
+        "exitCode": 0,
+        "outputSample": "\r\n\u003E workshop-login-frontend@0.1.0 test:coverage\r\n\u003E vitest run --coverage\r\n\r\n\r\n\u001B[1m\u001B[46m RUN \u001B[49m\u001B[22m \u001B[36mv3.2.4 \u001B[39m\u001B[90mC:/Users/Usuario/Documents/T19764-pedro-silva-shocush/ai-labs/web\u001B[39m\r\n      \u001B[2mCoverage enabled with \u001B[22m\u001B[33mv8\u001B[39m\r\n\r\n \u001B[32m\u2713\u001B[39m src/app/utils/preferences.spec.ts \u001B[2m(\u001B[22m\u001B[2m4 tests\u001B[22m\u001B[2m)\u001B[22m\u001B[32m 14\u001B[2mms\u001B[22m\u001B[39m\r\n \u001B[32m\u2713\u001B[39m src/app/models/api.guards.spec.ts \u001B[2m(\u001B[22m\u001B[2m4 tests\u001B[22m\u001B[2m)\u001B[22m\u001B[32m 6\u001B[2mms\u001B[22m\u001B[39m\r\n \u001B[32m\u2713\u001B[39m src/app/services/session.service.spec.ts \u001B[2m(\u001B[22m\u001B[2m3 tests\u001B[22m\u001B[2m)\u001B[22m\u001B[32m 10\u001B[2mms\u001B[22m\u001B[39m\r\n \u001B[32m\u2713\u001B[39m src/app/utils/legacy-format.spec.ts \u001B[2m(\u001B[22m\u001B[2m3 tests\u001B[22m\u001B[2m)\u001B[22m\u001B[32m 6\u001B[2mms\u001B[22m\u001B[39m\r\n \u001B[32m\u2713\u001B[39m src/app/services/tasks.service.spec.ts \u001B[2m(\u001B[22m\u001B[2m7 tests\u001B[22m\u001B[2m)\u001B[22m\u001B[32m 26\u001B[2mms\u001B[22m\u001B[39m\r\n \u001B[32m\u2713\u001B[39m src/app/services/auth.service.spec.ts \u001B[2m(\u001B[22m\u001B[2m7 tests\u001B[22m\u001B[2m)\u001B[22m\u001B[32m 28\u001B[2mms\u001B[22m\u001B[39m\r\n \u001B[32m\u2713\u001B[39m src/app/utils/visible-tasks.spec.ts \u001B[2m(\u001B[22m\u001B[2m2 tests\u001B[22m\u001B[2m)\u001B[22m\u001B[32m 6\u001B[2mms\u001B[22m\u001B[39m\r\n \u001B[32m\u2713\u001B[39m src/app/dashboard/dashboard.component.spec.ts \u001B[2m(\u001B[22m\u001B[2m5 tests\u001B[22m\u001B[2m)\u001B[22m\u001B[32m 16\u001B[2mms\u001B[22m\u001B[39m\r\n \u001B[32m\u2713\u001B[39m src/app/auth-flow.spec.ts \u001B[2m(\u001B[22m\u001B[2m2 tests\u001B[22m\u001B[2m)\u001B[22m\u001B[32m 15\u001B[2mms\u001B[22m\u001B[39m\r\n \u001B[32m\u2713\u001B[39m src/app/login/login.component.spec.ts \u001B[2m(\u001B[22m\u001B[2m6 tests\u001B[22m\u001B[2m)\u001B[22m\u001B[32m 5\u001B[2mms\u001B[22m\u001B[39m\r\n\r\n\u001B[2m Test Files \u001B[22m \u001B[1m\u001B[32m10 passed\u001B[39m\u001B[22m\u001B[90m (10)\u001B[39m\r\n\u001B[2m      Tests \u001B[22m \u001B[1m\u001B[32m43 passed\u001B[39m\u001B[22m\u001B[90m (43)\u001B[39m\r\n\u001B[2m   Start at \u001B[22m 16:58:07\r\n\u001B[2m   Duration \u001B[22m 1.80s\u001B[2m (transform 607ms, setup 0ms, collect 4.44s, tests 132ms, environment 4ms, prepare 2.75s)\u001B[22m\r\n\r\n\u001B[34m % \u001B[39m\u001B[2mCoverage report from \u001B[22m\u001B[33mv8\u001B[39m\r\n-------------------|---------|----------|---------|---------|-------------------\r\nFile               | % Stmts | % Branch | % Funcs | % Lines | Uncovered Line #s \r\n-------------------|---------|----------|---------|---------|-------------------\r\nAll files          |   89.31 |    89.24 |    92.3 |   89.31 |                   \r\n src               |       0 |        0 |       0 |       0 |                   \r\n  main.ts          |       0 |        0 |       0 |       0 | 1-8               \r\n src/app           |       0 |       50 |      50 |       0 |                   \r\n  app.component.ts |       0 |        0 |       0 |       0 | 1-10              \r\n  app.routes.ts    |       0 |      100 |     100 |       0 | 3-14              \r\n src/app/dashboard |     100 |       75 |     100 |     100 |                   \r\n  ....component.ts |     100 |       75 |     100 |     100 | 40,45             \r\n src/app/login     |     100 |      100 |     100 |     100 |                   \r\n  ....component.ts |     100 |      100 |     100 |     100 |                   \r\n src/app/models    |     100 |      100 |     100 |     100 |                   \r\n  api.guards.ts    |     100 |      100 |     100 |     100 |                   \r\n  api.models.ts    |       0 |        0 |       0 |       0 |                   \r\n src/app/services  |      96 |     92.3 |     100 |      96 |                   \r\n  auth.service.ts  |     100 |      100 |     100 |     100 |                   \r\n  ...on.service.ts |   94.28 |       90 |     100 |   94.28 | 30-31             \r\n  tasks.service.ts |   94.11 |     87.5 |     100 |   94.11 | 33-34             \r\n src/app/utils     |   94.59 |    90.62 |     100 |   94.59 |                   \r\n  http.ts          |     100 |      100 |     100 |     100 |                   \r\n  legacy-format.ts |     100 |      100 |     100 |     100 |                   \r\n  preferences.ts   |   92.68 |    86.66 |     100 |   92.68 | 24-25,32          \r\n  visible-tasks.ts |      90 |       80 |     100 |      90 | 11                \r\n src/environments  |     100 |      100 |     100 |     100 |                   \r\n  environment.ts   |     100 |      100 |     100 |     100 |                   \r\n-------------------|---------|----------|---------|---------|-------------------\r\n",
+        "durationMs": 3108
+      },
+      {
+        "name": "dev-server-serves-login",
+        "kind": "http-probe",
+        "verificationMethod": "http-status",
+        "passed": true,
+        "timedOut": false,
+        "skipped": false,
+        "skippedReason": null,
+        "exitCode": null,
+        "outputSample": "HTTP 200\n\u003C!doctype html\u003E\r\n\u003Chtml lang=\u0022es\u0022\u003E\r\n  \u003Chead\u003E\n    \u003Cscript type=\u0022module\u0022 src=\u0022/@vite/client\u0022\u003E\u003C/script\u003E\n\r\n    \u003Cmeta charset=\u0022utf-8\u0022\u003E\r\n    \u003Ctitle\u003EReqFlow \u00B7 Nuvexa Andina Digital\u003C/title\u003E\r\n    \u003Cbase href=\u0022/\u0022\u003E\r\n    \u003Cmeta name=\u0022viewport\u0022 content=\u0022width=device-width, initial-scale=1\u0022\u003E\r\n    \u003Clink rel=\u0022preconnect\u0022 href=\u0022https://fonts.googleapis.com\u0022\u003E\r\n    \u003Clink rel=\u0022preconnect\u0022 href=\u0022https://fonts.gstatic.com\u0022 crossorigin=\u0022\u0022\u003E\r\n    \u003Clink href=\u0022https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800\u0026amp;display=swap\u0022 rel=\u0022stylesheet\u0022\u003E\r\n  \u003Clink rel=\u0022stylesheet\u0022 href=\u0022styles.css\u0022\u003E\u003C/head\u003E\r\n  \u003Cbody\u003E\r\n    \u003Capp-root\u003E\u003C/app-root\u003E\r\n  \u003Cscript src=\u0022polyfills.js\u0022 type=\u0022module\u0022\u003E\u003C/script\u003E\u003Cscript src=\u0022main.js\u0022 type=\u0022module\u0022\u003E\u003C/script\u003E\u003C/body\u003E\r\n\u003C/html\u003E\r\n\n--- server output ---\n\r\n\u003E workshop-login-frontend@0.1.0 start\r\n\u003E ng serve --host localhost --port 4200 --port 4201\r\n\r\n\u001B[1m\u001B[33mOption \u0027port\u0027 has been specified multiple times. The value \u00274201\u0027 will be used.\u001B[39m\u001B[22m\r\n\u001B[33m\u003E\u001B[39m Building...\r\n\u001B[32m\u221A\u001B[39m Building...\r\n\u001B[1mInitial chunk files\u001B[22m\u001B[2m | \u001B[22m\u001B[1mNames\u001B[22m              \u001B[2m | \u001B[22m\u001B[1mRaw size\u001B[22m\r\n\u001B[32mmain.js\u001B[39m            \u001B[2m | \u001B[22m\u001B[2mmain\u001B[22m               \u001B[2m | \u001B[22m \u001B[36m2.54 kB\u001B[39m\u001B[2m | \u001B[22m\r\n\u001B[32mstyles.css\u001B[39m         \u001B[2m | \u001B[22m\u001B[2mstyles\u001B[22m             \u001B[2m | \u001B[22m \u001B[36m1.84 kB\u001B[39m\u001B[2m | \u001B[22m\r\n\u001B[32mchunk-EVSPGG2W.js\u001B[39m  \u001B[2m | \u001B[22m\u001B[2m-\u001B[22m                  \u001B[2m | \u001B[22m \u001B[36m1.64 kB\u001B[39m\u001B[2m | \u001B[22m\r\n\u001B[32mpolyfills.js\u001B[39m       \u001B[2m | \u001B[22m\u001B[2mpolyfills\u001B[22m          \u001B[2m | \u001B[22m\u001B[36m95 bytes\u001B[39m\u001B[2m | \u001B[22m\r\n\r\n\u001B[1m \u001B[22m                  \u001B[2m | \u001B[22m\u001B[1mInitial total\u001B[22m      \u001B[2m | \u001B[22m \u001B[1m6.11 kB\u001B[22m\r\n\r\n\u001B[1mLazy chunk files\u001B[22m   \u001B[2m | \u001B[22m\u001B[1mNames\u001B[22m              \u001B[2m | \u001B[22m\u001B[1mRaw size\u001B[22m\r\n\u001B[32mchunk-ZB3ZG2WI.js\u001B[39m  \u001B[2m | \u001B[22m\u001B[2mlogin-component\u001B[22m    \u001B[2m | \u001B[22m\u001B[36m23.46 kB\u001B[39m\u001B[2m | \u001B[22m\r\n\u001B[32mchunk-OH4ZBATM.js\u001B[39m  \u001B[2m | \u001B[22m\u001B[2mdashboard-component\u001B[22m\u001B[2m | \u001B[22m\u001B[36m20.24 kB\u001B[39m\u001B[2m | \u001B[22m\r\n\u001B[32mchunk-XAQS4ZAC.js\u001B[39m  \u001B[2m | \u001B[22m\u001B[2m-\u001B[22m                  \u001B[2m | \u001B[22m \u001B[36m2.76 kB\u001B[39m\u001B[2m | \u001B[22m\r\n\r\nApplication bundle generation complete. [1.487 seconds] - 2026-10-26T21:58:13.516Z\r\n\r\nWatch mode enabled. Watching for file changes...\r\nNOTE: Raw file sizes do not reflect development server per-request transformations.\r\n  \u001B[32m\u279C\u001B[39m  \u001B[1mLocal\u001B[22m:   \u001B[36mhttp://localhost:\u001B[1m4201\u001B[22m/\u001B[39m\r\n",
+        "durationMs": 4344
+      }
+    ],
+    "executions": [
+      {
+        "source": "production-build",
+        "resolvedExecutable": "C:\\Program Files\\nodejs\\npm.CMD",
+        "args": [
+          "run",
+          "build"
+        ],
+        "cwd": "C:\\Users\\Usuario\\Documents\\T19764-pedro-silva-shocush\\ai-labs\\web",
+        "env": {},
+        "prependPath": [],
+        "platform": "win32"
+      },
+      {
+        "source": "tests-pass",
+        "resolvedExecutable": "C:\\Program Files\\nodejs\\npm.CMD",
+        "args": [
+          "test"
+        ],
+        "cwd": "C:\\Users\\Usuario\\Documents\\T19764-pedro-silva-shocush\\ai-labs\\web",
+        "env": {},
+        "prependPath": [],
+        "platform": "win32"
+      },
+      {
+        "source": "coverage-report",
+        "resolvedExecutable": "C:\\Program Files\\nodejs\\npm.CMD",
+        "args": [
+          "run",
+          "test:coverage"
+        ],
+        "cwd": "C:\\Users\\Usuario\\Documents\\T19764-pedro-silva-shocush\\ai-labs\\web",
+        "env": {},
+        "prependPath": [],
+        "platform": "win32"
+      },
+      {
+        "source": "dev-server-serves-login",
+        "resolvedExecutable": "C:\\Program Files\\nodejs\\npm.CMD",
+        "args": [
+          "run",
+          "start",
+          "--",
+          "--port",
+          "4201"
+        ],
+        "cwd": "C:\\Users\\Usuario\\Documents\\T19764-pedro-silva-shocush\\ai-labs\\web",
+        "env": {},
+        "prependPath": [],
+        "platform": "win32"
+      }
+    ]
+  }
+}
