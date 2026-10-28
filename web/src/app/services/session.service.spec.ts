@@ -31,6 +31,21 @@ describe('SessionService characterization', () => {
     expect(values.has('workshop_user')).toBe(true);
   });
 
+  it('never writes the access token to localStorage', () => {
+    const localStorageSetItem = vi.fn();
+    vi.stubGlobal('localStorage', {
+      getItem: () => null,
+      setItem: localStorageSetItem,
+      removeItem: () => undefined,
+      clear: () => undefined
+    });
+
+    service.save('test-access-token', { username: 'student' });
+
+    expect(localStorageSetItem).not.toHaveBeenCalled();
+    expect(values.get('workshop_token')).toBe('test-access-token');
+  });
+
   it('returns no user and clears both session values on logout', () => {
     service.save('test-access-token', { username: 'student' });
 
