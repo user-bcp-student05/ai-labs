@@ -239,6 +239,7 @@ el 2026-10-26:
 | `npm test` | web — H-WEB-01 a H-WEB-06 | `web/` | exit code 0; Vitest 43/43 pasaron, 0 fallidas, 0 omitidas. | Aserción `tests-pass`. |
 | `npm run test:coverage` | web — H-WEB-01 a H-WEB-06 | `web/` | exit code 0. | Aserción `coverage-report`; reporte en `web/coverage/index.html` y `web/coverage/coverage-summary.json`. |
 | `npm run start -- --port 4201` + probe `http://localhost:4201/` | web — H-WEB-06 | `web/` | HTTP 200. | Aserción `dev-server-serves-login`; el servidor temporal fue detenido y el puerto 4201 verificado libre. |
+| `python tools/lab.py test web` (desde la raíz; ejecuta `npm test`, `npm run test:coverage` y `npm run build` en `web/`) — caracterización HU-01 | web — H-WEB-01, H-WEB-05 (token de sesión, caracterización sin cambio funcional) | raíz; comandos en `web/` | exit code 0; Vitest 53/53 pasaron en 10 archivos; build correcto. | Pruebas nuevas: `models/api.guards.spec.ts` (`null` en opcionales, H-WEB-05), `services/tasks.service.spec.ts` (token fuera de la URL), `services/session.service.spec.ts` (recarga en la misma sesión), `dashboard/dashboard.component.spec.ts` (token sin usuario válido, pregunta abierta 2), `auth-flow.spec.ts` (respuesta sin token válido: token vacío, token ausente, perfil inválido y `null` opcional; dashboard sin token sin `fetch`). Cobertura de líneas de los archivos de producción tocados por la HU ≥ 94 %. |
 
 Las cuatro aserciones de validación independiente pasaron (4/4). El plan
 reproducible está en `web/.tsupgrader/runtime-validation/eval-plan.json`; los

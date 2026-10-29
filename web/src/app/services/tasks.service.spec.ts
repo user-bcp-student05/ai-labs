@@ -33,6 +33,15 @@ describe('TasksService characterization', () => {
     );
   });
 
+  it('keeps the bearer token out of the request URL', async () => {
+    fetchMock.mockResolvedValue(new Response('[]', { status: 200 }));
+
+    await service.getTasks('student', 'test-access-token');
+
+    const [requestUrl] = fetchMock.mock.calls[0];
+    expect(requestUrl).not.toContain('test-access-token');
+  });
+
   it('encodes the owner query value', async () => {
     fetchMock.mockResolvedValue(new Response('[]', { status: 200 }));
 

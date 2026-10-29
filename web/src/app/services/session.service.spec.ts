@@ -46,6 +46,16 @@ describe('SessionService characterization', () => {
     expect(values.get('workshop_token')).toBe('test-access-token');
   });
 
+  it('keeps the token and user for a new instance within the same browser session', () => {
+    const user = { username: 'student' };
+    service.save('test-access-token', user);
+
+    const reloadedService = new SessionService();
+
+    expect(reloadedService.getToken()).toBe('test-access-token');
+    expect(reloadedService.getUser()).toEqual(user);
+  });
+
   it('returns no user and clears both session values on logout', () => {
     service.save('test-access-token', { username: 'student' });
 

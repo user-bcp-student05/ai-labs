@@ -25,4 +25,9 @@ describe('isUserProfile', () => {
     expect(isUserProfile({ username: 'student', displayName: 7 })).toBe(false);
     expect(isUserProfile({ username: 'student', role: false })).toBe(false);
   });
+
+  it('rejects optional fields set to null (characterizes H-WEB-05)', () => {
+    expect(isUserProfile({ username: 'student', displayName: null })).toBe(false);
+    expect(isUserProfile({ username: 'student', role: null })).toBe(false);
+  });
 });

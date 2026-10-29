@@ -114,4 +114,46 @@ describe('login and task loading flow', () => {
     expect(dashboard.error).toBe('No se pudo cargar el dashboard.');
     expect(dashboard.loading).toBe(false);
   });
+
+  it.each([
+    ['empty token', { token: '', user: { username: 'student' } }],
+    ['missing token', { user: { username: 'student' } }],
+    ['invalid user profile', { token: 'test-access-token', user: { username: 7 } }],
+    ['null optional profile field', {
+      token: 'test-access-token',
+      user: { username: 'student', displayName: null }
+    }]
+  ])('does not start a session when the login response has %s', async (_case, body) => {
+    fetchMock.mockResolvedValue(new Response(JSON.stringify(body), { status: 200 }));
+    const sessionService = new SessionService();
+    const login = new LoginComponent(
+      router as unknown as Router,
+      new AuthService(),
+      sessionService
+    );
+    login.username = 'student';
+    login.password = 'test-password';
+
+    await login.login();
+
+    expect(login.message).toBe('El backend respondió sin token.');
+    expect(sessionService.getToken()).toBeNull();
+    expect(sessionService.getUser()).toBeNull();
+    expect(router.navigate).not.toHaveBeenCalled();
+  });
+
+  it('does not request tasks or call fetch when the dashboard opens without a token', async () => {
+    const dashboard = new DashboardComponent(
+      router as unknown as Router,
+      changeDetector as ChangeDetectorRef,
+      zone as unknown as NgZone,
+      new TasksService(),
+      new SessionService()
+    );
+
+    await dashboard.ngOnInit();
+
+    expect(fetchMock).not.toHaveBeenCalled();
+    expect(router.navigate).toHaveBeenCalledWith(['/login']);
+  });
 });

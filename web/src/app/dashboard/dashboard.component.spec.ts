@@ -52,6 +52,17 @@ describe('DashboardComponent characterization', () => {
     expect(tasksService.getTasks).not.toHaveBeenCalled();
   });
 
+  it('requests tasks with an empty owner when a token is stored without a valid user', async () => {
+    sessionService.getToken.mockReturnValue('test-access-token');
+    sessionService.getUser.mockReturnValue(null);
+    tasksService.getTasks.mockResolvedValue([]);
+
+    await component.ngOnInit();
+
+    expect(tasksService.getTasks).toHaveBeenCalledWith('', 'test-access-token');
+    expect(router.navigate).not.toHaveBeenCalled();
+  });
+
   it('loads, filters and labels tasks through the task service', async () => {
     const tasks = [
       { title: 'Normal task', owner: 'student', priority: 'NORMAL', status: 'TODO' },
