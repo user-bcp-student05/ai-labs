@@ -9,9 +9,9 @@ Comando de validación (desde la raíz de ai-labs): `python tools/lab.py test we
 
 Estas tareas no se ejecutan hasta que se responda la decisión correspondiente en `design.md`.
 
-- [ ] **B-1** Decidir si `displayName` o `role` con `null` deben seguir rechazando el login (H-WEB-05). Mientras no se decida, no se cambia `isUserProfile`.
-- [ ] **B-2** Decidir si el dashboard debe exigir un usuario válido además del token, en lugar de pedir tareas con `owner` vacío.
-- [ ] **B-3** Confirmar el literal de la cabecera `Authorization` (`Bearer` según `docs/ENDPOINTS.md`, línea 114). Desbloquea la tarea 1.2.
+- [x] **B-1** Decidir si `displayName` o `role` con `null` deben seguir rechazando el login (H-WEB-05). Decidido: sí, se mantiene el rechazo; no se cambia `isUserProfile`. Ver `design.md`, preguntas abiertas.
+- [x] **B-2** Decidir si el dashboard debe exigir un usuario válido además del token, en lugar de pedir tareas con `owner` vacío. Decidido: no en este cambio; se mantiene el comportamiento actual y se registra como riesgo residual. Ver `design.md`.
+- [x] **B-3** Confirmar el literal de la cabecera `Authorization` (`Bearer` según `docs/ENDPOINTS.md`, línea 114). Confirmado con el código de `TasksService`. Desbloquea la tarea 1.2.
 
 ## 1. Corrección del spec (documentación)
 

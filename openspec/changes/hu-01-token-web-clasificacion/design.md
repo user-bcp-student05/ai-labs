@@ -144,6 +144,6 @@ Deben existir antes de cualquier refactor de login, sesión o token. El estado i
 
 ## Preguntas abiertas
 
-1. ¿Un `displayName` o `role` con `null` debe seguir rechazando el login (H-WEB-05)? Mientras no se decida, el diseño mantiene el comportamiento actual.
-2. ¿El dashboard debe exigir un usuario válido además del token, en vez de pedir tareas con `owner` vacío?
-3. Confirmar el literal de la cabecera `Authorization` antes de cerrar el paso 0.
+1. **Decidido (B-1):** un `displayName` o `role` con `null` sigue rechazando el login (H-WEB-05). Motivo: es el comportamiento actual, el cambio del Issue no es funcional y `docs/ENDPOINTS.md` (línea 81) documenta ese resultado. No se cambia `isUserProfile`.
+2. **Decidido (B-2):** el dashboard mantiene el comportamiento actual (pide tareas con `owner` vacío si el token existe sin usuario válido). Motivo: el alcance es caracterización, sin cambios funcionales. Riesgo residual registrado; un cambio de comportamiento requiere una HU aparte.
+3. **Decidido (B-3):** la cabecera `Authorization` usa el esquema `Bearer`, según `docs/ENDPOINTS.md` (línea 114) y el código de `TasksService`.
