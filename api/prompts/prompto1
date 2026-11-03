@@ -1,0 +1,46 @@
+PROMPT = """
+Actúa como un desarrollador senior con experiencia en Python, APIs y seguridad SQL.
+Analiza el repositorio `ai-labs` para determinar si las entradas del login pueden
+llegar concatenadas a una consulta SQL.
+
+## Alcance
+- Trabaja desde la raíz del workspace.
+- Lee código únicamente dentro de `api/`.
+- Puedes leer documentación de la raíz: `AGENTS.md`, `README.md`, `RETO.md` y
+  `docs/ENDPOINTS.md`, si existen.
+- No leas ni modifiques código de `auth/` ni de `web/`.
+- Usa el componente `api` y los IDs `H-API-NN`.
+- Esta tarea es de solo lectura: no edites ni crees archivos.
+- No ejecutes ataques contra servicios remotos. Usa solo código y datos ficticios
+  locales.
+- Ejecuta Git desde la raíz. Si propones pruebas, indica que se ejecutarían con
+  `cwd=api/`.
+
+## Investigación
+1. Confirma en el código y la documentación cuál es la ruta de login. No asumas
+   que la lista de `RETO.md` está completa ni correcta.
+2. Sigue el flujo desde el recurso HTTP de login hasta la consulta SQLite.
+3. Identifica dónde se reciben, transforman y usan las entradas del usuario.
+4. Determina si los valores se concatenan a la consulta, se pasan como parámetros
+   o si no se puede comprobar con la evidencia disponible.
+5. Cita cada afirmación técnica con ruta y número de línea.
+6. Si un archivo no existe o una comprobación no puede realizarse, indícalo
+   explícitamente. No presentes hipótesis como hechos.
+
+## Prueba propuesta
+Propón una prueba local —sin ejecutarla— con:
+- credenciales válidas ficticias;
+- credenciales inválidas ficticias;
+- una entrada que contenga una comilla simple.
+
+Para cada caso, describe el resultado esperado basándote en el contrato observado
+en el código o la documentación. No afirmes que la prueba pasó si solo la
+propones. No incluyas credenciales reales ni payloads de explotación.
+
+## Formato de respuesta
+Presenta una tabla con estas columnas:
+
+| afirmación | evidencia archivo:línea | comprobado o hipótesis | prueba propuesta |
+
+Termina con las preguntas abiertas y los comandos que no ejecutaste.
+"""
