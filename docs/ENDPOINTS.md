@@ -4,7 +4,7 @@
 
 Esta sección documenta el contrato comprobado de la API de tareas y requerimientos. En desarrollo local, la URL base es `http://localhost:8000` (README.md). El contrato y los ejemplos se derivan de `api/app/routes.py`, `api/app/models.py`, `api/app/security.py`, `api/app/service.py` y `api/app/requirement_service.py`; las respuestas de ejemplo se comprobaron con `TestClient`.
 
-No se ha acordado un contrato de JWT. Los endpoints siguen usando el formato legado descrito abajo. Los ejemplos son únicamente para el laboratorio local y no se deben exponer a redes no confiables.
+La API valida tokens JWT firmados con HS256. El emisor debe compartir el secreto configurado como `API_TOKEN_SECRET`; la API no permite autenticar si el secreto falta o tiene menos de 32 bytes. El cambio del emisor queda fuera del alcance de esta entrega, por lo que el login actual no genera todavía tokens compatibles. Los ejemplos de esta sección son únicamente para el laboratorio local y no se deben exponer a redes no confiables.
 
 ## Autenticación común
 
@@ -14,15 +14,15 @@ Todos los endpoints requieren el header:
 Authorization: Bearer <token>
 ```
 
-El token actual es Base64 del texto `username|role|expiration|secret`; `expiration` es tiempo Unix en segundos y debe ser futuro. El valor de prueba `WORKSHOP_SECRET_2026` está fijado en el código de la API. Este mecanismo no verifica firma criptográfica, issuer ni audience; no es JWT ni autenticación apta para producción. La identidad usada para autorizar recursos es `username`; el valor `role` no concede permisos adicionales.
+El token debe ser JWT firmado con HS256 e incluir los claims `sub` (identidad), `role` y `exp` (expiración Unix en segundos futura). La firma se valida usando `API_TOKEN_SECRET`, que debe contener al menos 32 bytes. La API no valida `issuer` ni `audience` porque todavía no existe un contrato acordado para esos claims. La identidad usada para autorizar recursos es `sub`; el valor `role` no concede permisos adicionales.
 
 Para generar un token local de ejemplo y reutilizarlo como `$TOKEN` en los comandos `curl` siguientes:
 
 ```bash
-TOKEN="$(python -c 'import base64,time; print(base64.b64encode(("student|STUDENT|" + str(int(time.time())+3600) + "|WORKSHOP_SECRET_2026").encode()).decode())')"
+TOKEN="$(python -c 'import jwt,os,time; print(jwt.encode({"sub":"student","role":"STUDENT","exp":int(time.time())+3600}, os.environ["API_TOKEN_SECRET"], algorithm="HS256"))')"
 ```
 
-`Bearer` is the documented client format. The current parser removes the literal prefix if present but does not enforce a scheme; clients should still send the header exactly as shown.
+El esquema `Bearer` es obligatorio. Los tokens Base64 legados sin firma son rechazados.
 
 Los errores de autenticación tienen HTTP 401 y este cuerpo:
 
@@ -30,7 +30,7 @@ Los errores de autenticación tienen HTTP 401 y este cuerpo:
 {"detail":"Invalid token"}
 ```
 
-Ocurre si el header falta, el token no se puede decodificar, no tiene cuatro campos, el secreto no coincide o expiró.
+Ocurre si falta el header, el token tiene firma inválida, está malformado, expiró o no contiene los claims requeridos. Si `API_TOKEN_SECRET` no está configurado correctamente, la API responde HTTP 503 con `{"detail":"Authentication is not configured"}`.
 
 ---
 
@@ -110,7 +110,7 @@ La fecha y los identificadores dependen de la base de datos local; los dos regis
 
 ### 6. Notas de seguridad
 
-La consulta usa siempre el `username` autenticado. El parámetro `owner` se conserva por compatibilidad, pero ya no permite consultar las tareas de otra identidad. La autenticación sigue siendo Base64 con secreto fijo; ver `H-API-01` en `HALLAZGOS.md`.
+La consulta usa siempre la identidad autenticada. El parámetro `owner` se conserva por compatibilidad, pero ya no permite consultar las tareas de otra identidad. La API exige un token firmado; el emisor todavía debe alinearse con este formato.
 
 ---
 
@@ -193,7 +193,7 @@ Los valores de `id` y `createdAt` dependen de la base de datos y la hora de crea
 
 ### 6. Notas de seguridad
 
-El servidor no permite asignar una tarea a otro propietario: la identidad del token determina `owner` y cualquier valor distinto recibe 403. La identidad proviene todavía del token Base64 legado descrito en `H-API-01`.
+El servidor no permite asignar una tarea a otro propietario: la identidad del token determina `owner` y cualquier valor distinto recibe 403. La identidad proviene del claim `sub` del token firmado.
 
 ---
 
@@ -386,12 +386,12 @@ Un error de conexión upstream no produce por sí mismo HTTP 5xx de esta API; se
 
 ### 6. Notas de seguridad
 
-`AUTH_HEALTH_URL` se lee de configuración del servidor, no de parámetros del cliente. El cuerpo de error de la API es genérico; los detalles de la excepción se registran en el log del servidor. La identidad sigue usando el token Base64 legado.
+`AUTH_HEALTH_URL` se lee de configuración del servidor, no de parámetros del cliente. El cuerpo de error de la API es genérico; los detalles de la excepción se registran en el log del servidor. La identidad proviene del token firmado.
 
 ---
 
 ## Preguntas abiertas
 
-- **H-API-01:** ¿Qué algoritmo, issuer, audience, nombres de claims y mecanismo de claves acordará el emisor para reemplazar el token Base64?
+- **H-API-01:** El verificador API-only requiere HS256 y los claims `sub`, `role` y `exp`, pero el emisor aún no se ha actualizado ni se han acordado `issuer`/`audience`. El login actual no es interoperable con este verificador hasta que se coordine ese cambio.
 - **H-API-04:** ¿Qué extensiones y tamaño máximo se permitirán para archivos, y qué política de nombre de almacenamiento se acordará?
 - La ubicación absoluta en `storedAt` depende de `WORKSHOP_UPLOAD_DIR`, sistema operativo y directorio de trabajo.

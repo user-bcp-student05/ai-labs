@@ -1,7 +1,9 @@
 import base64
+import os
 import time
 from pathlib import Path
 
+import jwt
 import urllib3
 import pytest
 from fastapi.testclient import TestClient
@@ -13,9 +15,20 @@ from app.requirement_service import RequirementService
 ONE_MEBIBYTE = 1024 * 1024
 
 
-def token(username: str = "student", role: str = "STUDENT") -> str:
-    raw = f"{username}|{role}|{int(time.time()) + 3600}|WORKSHOP_SECRET_2026"
-    return base64.b64encode(raw.encode()).decode()
+def token(
+    username: str = "student",
+    role: str = "STUDENT",
+    expires_at: int | None = None,
+) -> str:
+    return jwt.encode(
+        {
+            "sub": username,
+            "role": role,
+            "exp": expires_at if expires_at is not None else int(time.time()) + 3600,
+        },
+        os.environ["API_TOKEN_SECRET"],
+        algorithm="HS256",
+    )
 
 
 def headers(username: str = "student", role: str = "STUDENT") -> dict[str, str]:
@@ -227,6 +240,89 @@ def test_rejects_invalid_token(tmp_path: Path) -> None:
         response = client.get("/api/tasks", headers={"Authorization": "Bearer invalid"})
     assert response.status_code == 401
     assert response.json() == {"detail": "Invalid token"}
+
+
+def test_rejects_tampered_token(tmp_path: Path) -> None:
+    signed_token = token()
+    header, payload, signature = signed_token.split(".")
+    replacement = "A" if signature[0] != "A" else "B"
+    tampered_token = f"{header}.{payload}.{replacement}{signature[1:]}"
+    app = create_app(str(tmp_path / "workshop.db"), str(tmp_path / "uploads"))
+    with TestClient(app) as client:
+        response = client.get(
+            "/api/tasks",
+            headers={"Authorization": f"Bearer {tampered_token}"},
+        )
+    assert response.status_code == 401
+    assert response.json() == {"detail": "Invalid token"}
+
+
+def test_rejects_expired_token(tmp_path: Path) -> None:
+    expired_token = token(expires_at=int(time.time()) - 1)
+    app = create_app(str(tmp_path / "workshop.db"), str(tmp_path / "uploads"))
+    with TestClient(app) as client:
+        response = client.get(
+            "/api/tasks",
+            headers={"Authorization": f"Bearer {expired_token}"},
+        )
+    assert response.status_code == 401
+    assert response.json() == {"detail": "Invalid token"}
+
+
+@pytest.mark.parametrize(
+    "claims",
+    [
+        {"sub": "student", "exp": int(time.time()) + 3600},
+        {"sub": "student", "role": ["STUDENT"], "exp": int(time.time()) + 3600},
+    ],
+)
+def test_rejects_missing_or_invalid_identity_claims(
+    tmp_path: Path,
+    claims: dict[str, object],
+) -> None:
+    invalid_token = jwt.encode(
+        claims,
+        os.environ["API_TOKEN_SECRET"],
+        algorithm="HS256",
+    )
+    app = create_app(str(tmp_path / "workshop.db"), str(tmp_path / "uploads"))
+    with TestClient(app) as client:
+        response = client.get(
+            "/api/tasks",
+            headers={"Authorization": f"Bearer {invalid_token}"},
+        )
+    assert response.status_code == 401
+    assert response.json() == {"detail": "Invalid token"}
+
+
+def test_rejects_legacy_unsigned_token(tmp_path: Path) -> None:
+    legacy_payload = (
+        f"student|STUDENT|{int(time.time()) + 3600}|WORKSHOP_SECRET_2026"
+    )
+    legacy_token = base64.b64encode(legacy_payload.encode()).decode()
+    app = create_app(str(tmp_path / "workshop.db"), str(tmp_path / "uploads"))
+    with TestClient(app) as client:
+        response = client.get(
+            "/api/tasks",
+            headers={"Authorization": f"Bearer {legacy_token}"},
+        )
+    assert response.status_code == 401
+    assert response.json() == {"detail": "Invalid token"}
+
+
+def test_reports_missing_token_secret_as_configuration_error(
+    tmp_path: Path,
+    monkeypatch,
+) -> None:
+    monkeypatch.delenv("API_TOKEN_SECRET")
+    app = create_app(str(tmp_path / "workshop.db"), str(tmp_path / "uploads"))
+    with TestClient(app) as client:
+        response = client.get(
+            "/api/tasks",
+            headers={"Authorization": "Bearer not-a-token"},
+        )
+    assert response.status_code == 503
+    assert response.json() == {"detail": "Authentication is not configured"}
 
 
 def test_empty_task_payload_uses_documented_defaults(tmp_path: Path) -> None:

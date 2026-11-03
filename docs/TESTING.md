@@ -9,6 +9,9 @@ deterministas.
 
 | Endpoint | Caso | Tipo | Resultado esperado |
 |---|---|---|---|
+| Todas las rutas protegidas | JWT HS256 válido con claims `sub`, `role` y `exp` | Autenticación | La solicitud se procesa con la identidad `sub`. |
+| Todas las rutas protegidas | Token ausente, inválido, expirado, alterado o en formato Base64 legado | Error de autenticación | HTTP 401 `{"detail":"Invalid token"}`. |
+| Todas las rutas protegidas | `API_TOKEN_SECRET` ausente o menor de 32 bytes | Error de configuración | HTTP 503 `{"detail":"Authentication is not configured"}`. |
 | `GET /api/tasks` | Lista inicial del usuario autenticado y conserva los campos del contrato | Camino feliz | HTTP 200; lista de tareas con `id`, `title`, `description`, `status`, `owner`, `priority` y `createdAt`. |
 | `GET /api/tasks` | `owner` vacío; solicitud con token ausente | Borde / error | HTTP 200 usando la identidad; sin autenticación, HTTP 401 `{"detail":"Invalid token"}`. |
 | `GET /api/tasks` | Intento de leer tareas de otro `owner` | Error de autorización | HTTP 403 `{"detail":"Forbidden"}`. |
@@ -54,6 +57,11 @@ test_backend_health_preserves_upstream_error_status_in_success_response
 test_backend_health_decode_failure_returns_documented_unavailable_response
 test_all_endpoints_reject_missing_authentication
 test_task_creation_rejects_non_object_body
+test_rejects_tampered_token
+test_rejects_expired_token
+test_rejects_missing_or_invalid_identity_claims
+test_rejects_legacy_unsigned_token
+test_reports_missing_token_secret_as_configuration_error
 ```
 
 La suite también conserva los tests previos de contrato, SQL con apóstrofes,
@@ -66,28 +74,27 @@ servicios externos ni credenciales reales.
 Todas las ejecuciones de esta sección corresponden a **componente `api`** y
 verifican los contratos relacionados con **H-API-01 a H-API-07**. Las pruebas
 asociadas de forma directa a los hallazgos de seguridad pendientes son
-H-API-01 (rechazo de autenticación inválida) y H-API-04 (comportamiento actual
-de carga); estas pruebas no cambian su estado ni afirman que estén resueltos.
+H-API-01 (firma y claims del token, rechazo del formato legado y configuración
+fallida) y H-API-04 (comportamiento actual de carga).
 
 | Momento | Comando | Directorio | Código de salida | Resultado |
 |---|---|---|---:|---|
 | Base, antes de añadir casos | `& .\.venv\Scripts\python.exe -m pytest --cov=app --cov-branch --cov-report=term-missing` | `api/` | 0 | 11 pasaron; cobertura global reportada como 97% redondeada por pytest-cov. |
 | Suite ampliada | `& .\.venv\Scripts\python.exe -m pytest --cov=app --cov-branch --cov-report=term-missing --cov-fail-under=85` | `api/` | 0 | 31 pasaron, 1 advertencia de deprecación de Starlette; cobertura global exacta 97.42%; gate 85% aprobado. |
+| Implementación H-API-01 | `python tools/lab.py test api` | raíz `ai-labs/` | 0 | 37 pasaron; cobertura global 97.56%; `app/security.py` 100%; gate 85% aprobado. Una advertencia de deprecación de Starlette. |
 | Higiene del diff | `git diff --check` | raíz `ai-labs/` | 0 | Sin errores de whitespace. |
 
 **Método de medición:** pytest-cov/coverage.py sobre `app`, con ramas habilitadas
 (`--cov=app --cov-branch`); el reporte incluye statements y ramas, no mide el
-código de tests. En la ejecución final el reporte total fue 215 statements,
-3 no cubiertos, 18 ramas y 3 parciales. La cobertura branch-aware fue
-**227/233 elementos = 97.42%** (212/215 statements cubiertos; las ramas se
+código de tests. En la ejecución final el reporte total fue 224 statements,
+3 no cubiertos, 22 ramas y 3 parciales. La cobertura branch-aware fue
+**240/246 elementos = 97.56%** (221/224 statements cubiertos; las ramas se
 incluyen en el total calculado por coverage.py).
 
-**Cobertura del código modificado:** no se modificó código productivo en esta
-tarea; solo se modificó `api/tests/test_api.py`, que no está dentro del objetivo
-`--cov=app`. Por tanto, el porcentaje de cobertura de líneas productivas
-modificadas es **no aplicable (0 archivos productivos modificados)**. Como
-referencia de regresión, la cobertura global del código productivo de `api/`
-es 97.42%, superior al umbral de 85%.
+**Cobertura del código modificado:** `api/app/security.py` quedó completamente
+cubierto (100% con ramas habilitadas); la cobertura global de `api/` fue 97.56%, ambas por encima del
+umbral de 85%. La ejecución actual no valida interoperabilidad con el emisor
+de tokens, que permanece fuera del alcance API-only.
 
 ## Fallos, pendientes y pruebas propuestas
 
@@ -99,9 +106,10 @@ es 97.42%, superior al umbral de 85%.
 
 ### Pendientes
 
-- **H-API-01:** el token sigue siendo el formato Base64 legado. No se pueden
-  afirmar pruebas de firma, issuer o audience sin acordar el contrato JWT con
-  el emisor.
+- **H-API-01:** la API ahora exige HS256 con `sub`, `role` y `exp`, pero el
+  emisor sigue fuera de alcance y no genera este formato. El flujo integrado de
+  login no es interoperable hasta coordinar el cambio. `issuer` y `audience`
+  tampoco se validan porque siguen sin contrato acordado.
 - **H-API-04:** la API todavía no define ni aplica extensiones permitidas,
   tamaño máximo o normalización del nombre. Los tests de archivo sin extensión
   y de 1 MiB registran el comportamiento actual; no representan una garantía de
@@ -110,7 +118,8 @@ es 97.42%, superior al umbral de 85%.
 
 ### Pruebas propuestas, no ejecutadas
 
-- Tras acordar H-API-01 con el emisor: token con firma inválida, issuer y
+- Tras coordinar H-API-01 con el emisor: prueba de interoperabilidad con su
+  token firmado, claims acordados y rotación de claves. emisor: token con firma inválida, issuer y
   audience incorrectos, expiración y claims obligatorios.
 - Tras acordar H-API-04: normalización de nombres, rechazo de extensiones no
   permitidas y pruebas justo por debajo, en y por encima del máximo de bytes.
