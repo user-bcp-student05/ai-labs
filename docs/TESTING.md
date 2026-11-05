@@ -127,3 +127,31 @@ es 97.42%, superior al umbral de 85%.
 - `api/app/routes.py`, `api/app/models.py`, `api/app/security.py`,
   `api/app/service.py`, `api/app/repository.py` y
   `api/app/requirement_service.py`
+
+## auth — H-AUTH-01
+
+### Casos de caracterizacion
+
+Los casos reutilizan `auth/src/test/java/com/bcp/workshop/auth/AuthResourceTest.java`.
+
+| Caso | Comportamiento protegido | Resultado observado |
+|---|---|---|
+| `logsInWithWorkshopUser` | Las credenciales validas conservan HTTP 200, `user.username=student` y `token`. | Pasa. |
+| `rejectsOrdinaryInvalidCredentials` | Credenciales ordinarias invalidas responden HTTP 401 sin `token`. | Pasa. |
+| `rejectsLoginWithoutUsername`, `rejectsLoginWithBlankUsername`, `rejectsLoginWithoutPassword`, `rejectsLoginWithBlankPassword` | Campos requeridos ausentes o en blanco conservan HTTP 400 y el mensaje de validacion existente. | Pasan. |
+| `rejectsSqlInjectionInUsername` | Una entrada especificada por el Issue como `username`, emparejada con la contrasena valida, debe responder HTTP 401 sin `token`. | Falla como se esperaba antes de corregir: HTTP 200 con `token`. |
+| `rejectsSqlInjectionInPassword` | La entrada especificada por el Issue como `password`, emparejada con el usuario valido, debe responder HTTP 401 sin `token`. | Falla como se esperaba antes de corregir: HTTP 200 con `token`. |
+
+### Ejecucion de caracterizacion
+
+Comando ejecutado desde `auth/`, con `AUTH_DB_URL` apuntando a un archivo SQLite temporal y Quarkus usando un puerto de test efimero:
+
+```powershell
+mvn "-Dquarkus.http.test-port=0" "-Dtest=AuthResourceTest" test
+```
+
+Resultado: 8 pruebas ejecutadas, 2 fallidas y 6 pasaron; codigo de salida 1. Las unicas fallas fueron `rejectsSqlInjectionInUsername` y `rejectsSqlInjectionInPassword`: ambas esperaban HTTP 401 y recibieron HTTP 200. Las respuestas observadas incluyeron `token`, reproduciendo el comportamiento vulnerable descrito por H-AUTH-01. La base SQLite temporal se elimino al terminar.
+
+### Ejecucion posterior a la correccion
+
+`LegacyDatabase.findByCredentials` ahora enlaza `username` y `password` como parametros JDBC. Con el mismo entorno (`AUTH_DB_URL` temporal y `-Dquarkus.http.test-port=0`), `mvn test` y `mvn verify` desde `auth/` ejecutan 8 pruebas sin fallos, incluidos los dos casos del Issue (HTTP 401 sin `token`). JaCoCo reporta 10 de 11 lineas cubiertas (90,9 %) en `findByCredentials`. Las tareas de OpenSpec 1.1 a 3.3 quedaron completadas.
